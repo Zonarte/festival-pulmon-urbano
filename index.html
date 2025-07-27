@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festival Pulmón Urbano 2025</title>
+    <!-- Fuentes de Google: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para el icono de WhatsApp -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Estilos CSS integrados directamente para la previsualización en Canvas -->
+    <style>
+        /* Asegura que html y body ocupen el 100% de la altura de la ventana y permitan el desplazamiento */
+        html, body {
+            height: 100%; /* Asegura que html y body tomen la altura completa del viewport */
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f0f0f; /* Fondo oscuro */
+            color: #fff;
+            overflow-x: hidden; /* Previene el desplazamiento horizontal */
+        }
+
+        body {
+            display: flex; /* Usa flexbox para organizar el contenido verticalmente */
+            flex-direction: column;
+            min-height: 100vh; /* Asegura que el body sea al menos tan alto como la ventana */
+        }
+
+        header.hero {
+            /* Usando la imagen proporcionada para el fondo del hero */
+            background: url('http://googleusercontent.com/file_content/3') center/cover no-repeat;
+            background-size: cover; /* Asegura que la imagen cubra todo el espacio */
+            background-position: center; /* Centra la imagen */
+            /* Ajustado a una altura mínima más pequeña para asegurar que el resto del contenido sea visible */
+            min-height: 60vh; /* Ajustado para ser un poco más grande que 50vh, pero no dominante */
+            height: auto; /* Permite que la altura se ajuste al contenido si es necesario */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-bottom-left-radius: 3rem; /* Esquinas redondeadas */
+            border-bottom-right-radius: 3rem; /* Esquinas redondeadas */
+            overflow: hidden; /* Asegura que el contenido no se desborde del radio */
+            flex-shrink: 0; /* Evita que el hero se encoja si hay mucho contenido abajo */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 1rem; /* Padding para móviles */
+            max-width: 90%; /* Limita el ancho del contenido para pantallas grandes */
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            animation: fadeInDown 1s ease-in-out;
+            color: #FFD700; /* Amarillo para titulares */
+            margin-bottom: 1rem; /* Espacio debajo del título */
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            animation: fadeInUp 1.5s ease-in-out;
+            color: #F0FDF4; /* Blanco/amarillo claro para texto */
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00b96d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 1.5rem; /* Esquinas redondeadas para el botón */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            background-color: #00e17e;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .about, .gemini-qa, .gallery { /* Añadido .gemini-qa aquí */
+            padding: 40px 20px;
+            text-align: center;
+            margin: 2rem auto; /* Margen y centrado */
+            max-width: 90%;
+            border-radius: 2rem; /* Esquinas redondeadas para secciones */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            flex-grow: 1; /* Permite que estas secciones crezcan para ocupar el espacio disponible */
+        }
+
+        .about {
+            background-color: #1E3A2B; /* Verde oscuro para la sección About */
+            margin-top: 4rem; /* Añadido un margen superior para empujar la sección hacia abajo */
+        }
+
+        .about h2 {
+            color: #FFD700; /* Amarillo para titulares */
+        }
+
+        /* Estilos para la nueva sección de Gemini Q&A */
+        .gemini-qa {
+            background-color: #0A1A0A; /* Un verde oscuro similar a la galería */
+            margin-top: 2rem;
+        }
+
+        .gemini-qa h2 {
+            color: #FFD700;
+        }
+
+        .gemini-qa textarea {
+            width: calc(100% - 20px); /* Ancho completo menos padding */
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 0.5rem;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+            resize: vertical; /* Permite redimensionar verticalmente */
+            min-height: 80px;
+        }
+
+        .gemini-qa button {
+            background-color: #00b96d;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .gemini-qa button:hover {
+            background-color: #00e17e;
+            transform: translateY(-2px);
+        }
+
+        .gemini-qa .response-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1E3A2B; /* Fondo para la respuesta */
+            border-radius: 1rem;
+            text-align: left;
+            white-space: pre-wrap; /* Mantiene saltos de línea y espacios */
+            word-wrap: break-word; /* Rompe palabras largas */
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00b96d;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Oculto por defecto */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .gallery {
+            padding-bottom: 60px;
+            background-color: #0A1A0A; /* Verde muy oscuro para la sección Gallery */
+        }
+
+        .gallery h2 {
+            color: #FFD700; /* Amarillo para titulares */
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 90%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 1.5rem; /* Esquinas redondeadas para el carrusel */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            border-radius: 1.5rem; /* Asegura que las imágenes también tengan bordes redondeados */
+        }
+
+        .carousel-images img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 1.5rem; /* Esquinas redondeadas para las imágenes */
+        }
+
+        button.prev, button.next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            border-radius: 50%; /* Botones redondos */
+            font-size: 1.5rem;
+            transition: background-color 0.3s ease;
+            z-index: 3; /* Asegura que los botones estén sobre las imágenes */
+        }
+
+        button.prev:hover, button.next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        button.prev { left: 10px; }
+        button.next { right: 10px; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            border-top-left-radius: 2rem; /* Esquinas redondeadas */
+            border-top-right-radius: 2rem; /* Esquinas redondeadas */
+            margin-top: 2rem;
+            flex-shrink: 0; /* Evita que el footer se encoja */
+        }
+
+        footer p {
+            color: #F0FDF4;
+        }
+
+        footer a {
+            color: #00b96d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Estilos del botón flotante de WhatsApp */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #25D366; /* Color de WhatsApp */
+            color: white;
+            padding: 1rem;
+            border-radius: 50%; /* Botón completamente redondo */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            background-color: #1DA851;
+        }
+
+        .whatsapp-button span {
+            display: none; /* Oculto por defecto en móvil */
+            margin-left: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            .whatsapp-button {
+                padding: 1rem 1.5rem; /* Más ancho en desktop */
+                border-radius: 2.5rem; /* Forma de píldora */
+            }
+            .whatsapp-button span {
+                display: inline; /* Mostrar texto en desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content animated-text">
+            <h1>Festival Pulmón Urbano 2025</h1>
+            <p>Celebrando la naturaleza, el arte y la cultura ecológica.</p>
+            <a class="cta-button" href="https://wa.me/524433179927" target="_blank">¡Reserva tu lugar!</a>
+        </div>
+    </header>
+
+    <section class="about">
+        <h2>Sobre el Festival</h2>
+        <p>Únete a esta experiencia eco-cultural donde conectamos con la naturaleza a través de arte, plantas y cultura urbana.</p>
+    </section>
+
+    <section class="gemini-qa">
+        <h2>Preguntas Ecológicas ✨</h2>
+        <p>¡Pregúntale a nuestra IA de Gemini sobre plantas, conservación o el festival!</p>
+        <textarea id="questionInput" placeholder="Ej: ¿Cuáles son las mejores plantas para purificar el aire en casa?"></textarea>
+        <button id="askGeminiButton">Preguntar a Gemini</button>
+        <div class="loading-spinner" id="loadingSpinner"></div>
+        <div class="response-area" id="geminiResponse"></div>
+    </section>
+
+    <section class="gallery">
+        <h2>Galería</h2>
+        <div class="carousel">
+            <div class="carousel-images">
+                <!-- Usando imágenes proporcionadas para la galería -->
+                <img src="http://googleusercontent.com/file_content/0" alt="Festival Pulmón Urbano - Imagen 1">
+                <img src="http://googleusercontent.com/file_content/5" alt="Festival Pulmón Urbano - Imagen 2">
+                <img src="http://googleusercontent.com/file_content/4" alt="Festival Pulmón Urbano - Imagen 3">
+            </div>
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>Contacto: <a href="https://wa.me/524433179927" target="_blank">WhatsApp</a></p>
+        <p>&copy; 2025 Festival Pulmón Urbano</p>
+    </footer>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/524433179927" target="_blank" class="whatsapp-button">
+        <i class="fab fa-whatsapp"></i>
+        <span>Ayuda en línea</span>
+    </a>
+
+    <!-- Script JS integrado directamente para la previsualización en Canvas -->
+    <script>
+        // Carousel functionality
+        const carousel = document.querySelector('.carousel-images');
+        const images = document.querySelectorAll('.carousel-images img');
+        let index = 0;
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(${-index * 100}%)`;
+        }
+
+        document.querySelector('.next').addEventListener('click', () => {
+            index = (index + 1) % images.length;
+            updateCarousel();
+        });
+
+        document.querySelector('.prev').addEventListener('click', () => {
+            index = (index - 1 + images.length) % images.length;
+            updateCarousel();
+        });
+
+        window.addEventListener('load', updateCarousel);
+
+        // Gemini API Integration
+        const questionInput = document.getElementById('questionInput');
+        const askGeminiButton = document.getElementById('askGeminiButton');
+        const geminiResponseDiv = document.getElementById('geminiResponse');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        askGeminiButton.addEventListener('click', async () => {
+            const prompt = questionInput.value.trim();
+            if (!prompt) {
+                geminiResponseDiv.textContent = 'Por favor, escribe tu pregunta.';
+                return;
+            }
+
+            // Show loading spinner and clear previous response
+            loadingSpinner.style.display = 'block';
+            geminiResponseDiv.textContent = '';
+            askGeminiButton.disabled = true; // Disable button during processing
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide the API key at runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    geminiResponseDiv.textContent = text;
+                } else {
+                    geminiResponseDiv.textContent = 'Lo siento, no pude obtener una respuesta. Inténtalo de nuevo más tarde.';
+                    console.error('Unexpected API response structure:', result);
+                }
+            } catch (error) {
+                geminiResponseDiv.textContent = 'Ocurrió un error al conectar con Gemini. Por favor, inténtalo de nuevo.';
+                console.error('Error calling Gemini API:', error);
+            } finally {
+                loadingSpinner.style.display = 'none'; // Hide spinner
+                askGeminiButton.disabled = false; // Re-enable button
+            }
+        });
+    </script>
+</body>
+</html>
